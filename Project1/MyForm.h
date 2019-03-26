@@ -1,7 +1,7 @@
 #pragma once
-#include <math.h>
 #include <iostream>
 #include <sstream>
+
 //#include <Cstring>
 
 namespace Project1 {
@@ -109,12 +109,13 @@ namespace Project1 {
 		unsigned int x = int::Parse(textBox1->Text);
 
 		
-
 		char buf[30];
 		//sprintf(buf, "%X", x);
-		itoa(x, buf, 3);
+
+		itoa(x, buf, 2);
 		System::String^ result = gcnew System::String(buf);
-		label1->Text =  result;
+		label1->Text = result;
+
 
 
 		//Close();

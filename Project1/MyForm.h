@@ -30,8 +30,15 @@ namespace Project1 {
 
 		typedef void(*pgetBin)(int x, char*);
 		typedef void(*pgetThree)(int x, char*);
+		typedef void(*pgetOct)(int x, char*);
+		typedef void(*pgetHex)(int x, char*);
 		pgetBin getBin;
 		pgetThree getThree;
+		pgetOct getOct;
+		pgetHex getHex;
+		
+		typedef int(*pSenseOfExiting)();
+		pSenseOfExiting SenseOfExiting;
 
 		MyForm(void)
 		{

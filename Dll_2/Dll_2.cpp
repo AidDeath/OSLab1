@@ -3,13 +3,15 @@
 
 #include "stdafx.h"
 #include <iostream>
-#include <sstream>
+//#include <sstream>
 #include "dll2_header.h"
 
 
-int dll2(int x)
+Dll2_API void getBin(int x, char* out)
 {
-	
-	
-	return(x);
+	char buf[30];
+	_itoa_s(x, buf, 2);
+	//out = *buf;
+	strcpy_s(out, sizeof(buf), buf);
+
 }

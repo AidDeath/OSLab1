@@ -29,8 +29,9 @@ namespace Project1 {
 	public:
 
 		typedef void(*pgetBin)(int x, char*);
-
+		typedef void(*pgetThree)(int x, char*);
 		pgetBin getBin;
+		pgetThree getThree;
 
 		MyForm(void)
 		{
@@ -113,10 +114,10 @@ namespace Project1 {
 			this->radioButton1->AutoSize = true;
 			this->radioButton1->Location = System::Drawing::Point(236, 12);
 			this->radioButton1->Name = L"radioButton1";
-			this->radioButton1->Size = System::Drawing::Size(85, 17);
+			this->radioButton1->Size = System::Drawing::Size(75, 17);
 			this->radioButton1->TabIndex = 3;
 			this->radioButton1->TabStop = true;
-			this->radioButton1->Text = L"radioButton1";
+			this->radioButton1->Text = L"Dec to Bin";
 			this->radioButton1->UseVisualStyleBackColor = true;
 			// 
 			// radioButton2
@@ -124,10 +125,10 @@ namespace Project1 {
 			this->radioButton2->AutoSize = true;
 			this->radioButton2->Location = System::Drawing::Point(236, 35);
 			this->radioButton2->Name = L"radioButton2";
-			this->radioButton2->Size = System::Drawing::Size(85, 17);
+			this->radioButton2->Size = System::Drawing::Size(88, 17);
 			this->radioButton2->TabIndex = 4;
 			this->radioButton2->TabStop = true;
-			this->radioButton2->Text = L"radioButton2";
+			this->radioButton2->Text = L"Dec to Three";
 			this->radioButton2->UseVisualStyleBackColor = true;
 			// 
 			// radioButton3
@@ -135,10 +136,10 @@ namespace Project1 {
 			this->radioButton3->AutoSize = true;
 			this->radioButton3->Location = System::Drawing::Point(236, 58);
 			this->radioButton3->Name = L"radioButton3";
-			this->radioButton3->Size = System::Drawing::Size(85, 17);
+			this->radioButton3->Size = System::Drawing::Size(77, 17);
 			this->radioButton3->TabIndex = 5;
 			this->radioButton3->TabStop = true;
-			this->radioButton3->Text = L"radioButton3";
+			this->radioButton3->Text = L"Dec to Oct";
 			this->radioButton3->UseVisualStyleBackColor = true;
 			// 
 			// radioButton4
@@ -146,10 +147,10 @@ namespace Project1 {
 			this->radioButton4->AutoSize = true;
 			this->radioButton4->Location = System::Drawing::Point(236, 81);
 			this->radioButton4->Name = L"radioButton4";
-			this->radioButton4->Size = System::Drawing::Size(85, 17);
+			this->radioButton4->Size = System::Drawing::Size(79, 17);
 			this->radioButton4->TabIndex = 6;
 			this->radioButton4->TabStop = true;
-			this->radioButton4->Text = L"radioButton4";
+			this->radioButton4->Text = L"Dec to Hex";
 			this->radioButton4->UseVisualStyleBackColor = true;
 			// 
 			// MyForm
@@ -173,10 +174,16 @@ namespace Project1 {
 		}
 #pragma endregion
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-		
+		unsigned int x;
 
-		unsigned int x = int::Parse(textBox1->Text);
-		//Прочитали число, передаем его в функцию библиотеки.
+		if (textBox1->Text == "" || (!radioButton1->Checked && !radioButton2->Checked && !radioButton3->Checked && !radioButton4->Checked))
+		{
+			MessageBox::Show(this, "Необходимо ввести число и выбрать функцию", "Ошибка", MessageBoxButtons::OK);
+			return;
+		}
+		else
+		x = int::Parse(textBox1->Text);
+		//Прочитали интовое число
 
 		//Запись значения из адреса buf в строку System:: и передача в текст 
 		char buf[30] = "";
@@ -186,17 +193,14 @@ namespace Project1 {
 		System::String^ result = gcnew System::String(buf);
 		label1->Text = result;
 		
-	//	std::stoi(buf, nullptr, 10);
-
-		//Close();
 	}
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 
 		// ПОДКЛЮЧЕНИЕ БИБЛИОТЕКИ
-		HINSTANCE hLib = LoadLibrary(TEXT("../DEBUG/Dll_2.dll"));
+		HINSTANCE hLib = LoadLibrary(TEXT("Dll_2.dll"));
 		if (hLib == NULL)
 		{
-			MessageBox::Show(this, "норм", "error", MessageBoxButtons::OK);
+			MessageBox::Show(this, "Нет файла DLL", "error", MessageBoxButtons::OK);
 		}
 		else
 		{
@@ -204,12 +208,11 @@ namespace Project1 {
 			getBin = (pgetBin)GetProcAddress(hLib, "getBin");
 			//DigitsCount = (pDigitsCount)GetProcAddress(hLib, "DigitsCount");
 
-
 			if (!getBin)
 			{// handle the error
 				FreeLibrary(hLib);
 				//	MessageBoxW(NULL, TEXT("Библиотека освобождена, нет такой функции"), NULL, MB_OK);
-				MessageBox::Show(this, "Не загружен адрес ф-ции", "error", MessageBoxButtons::OK);
+				MessageBox::Show(this, "Не найдена такая ф-ция в DLL", "error", MessageBoxButtons::OK);
 				//MessageBoxEx(NULL, TEXT("3"), TEXT("3"), MB_OK, 0);
 			}
 		}

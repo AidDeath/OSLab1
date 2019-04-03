@@ -11,7 +11,10 @@ Dll2_API void getBin(int x, char* out)
 {
 	char buf[30];
 	_itoa_s(x, buf, 2);
-	//out = *buf;
 	strcpy_s(out, sizeof(buf), buf);
+}
 
+Dll2_API unsigned int SenseOfExiting()
+{
+	return 2;
 }

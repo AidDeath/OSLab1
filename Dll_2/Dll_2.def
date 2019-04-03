@@ -1,3 +1,4 @@
 LIBRARY Dll_2.dll
 EXPORTS 
 	getBin @1
+	SenseOfExiting @2

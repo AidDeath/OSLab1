@@ -1,0 +1,5 @@
+LIBRARY Dll_3.dll
+EXPORTS 
+	getThree @1
+	SenseOfExiting @2
+

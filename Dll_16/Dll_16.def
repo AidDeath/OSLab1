@@ -1,0 +1,4 @@
+LIBRARY Dll_16.dll
+EXPORTS 
+	getHex @1
+	SenseOfExiting @2

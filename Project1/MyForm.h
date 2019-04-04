@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <windows.h>
+#include < vcclr.h >
 //#include "c:\Users\aidde\source\repos\Project1\Dll_2\dll2_header.h"
 
 //#include <Cstring>
@@ -11,6 +12,7 @@ namespace Project1 {
 	
 
 	using namespace System;
+	using namespace System::IO;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
 	using namespace System::Windows::Forms;
@@ -203,27 +205,57 @@ namespace Project1 {
 	}
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 
-		// ПОДКЛЮЧЕНИЕ БИБЛИОТЕКИ
-		HINSTANCE hLib = LoadLibrary(TEXT("Dll_2.dll"));
-		if (hLib == NULL)
-		{
-			MessageBox::Show(this, "Нет файла DLL", "error", MessageBoxButtons::OK);
-		}
-		else
-		{
-			
-			getBin = (pgetBin)GetProcAddress(hLib, "getBin");
-			//DigitsCount = (pDigitsCount)GetProcAddress(hLib, "DigitsCount");
+		//сканирование папки приложения, поиск DLL
+		
 
-			if (!getBin)
-			{// handle the error
-				FreeLibrary(hLib);
-				//	MessageBoxW(NULL, TEXT("Библиотека освобождена, нет такой функции"), NULL, MB_OK);
-				MessageBox::Show(this, "Не найдена такая ф-ция в DLL", "error", MessageBoxButtons::OK);
-				//MessageBoxEx(NULL, TEXT("3"), TEXT("3"), MB_OK, 0);
+		array<String^>^ files = Directory::GetFiles("../DEBUG/","*.dll");
+		//for (int i = 0; i < files->Length; i++)
+			//Console::WriteLine(files[i]);
+		
+
+
+
+	//Ищем все присутствующие dll, загоняем их в массив строк
+		// запускаем цикл, который будет по очережи подставлять имя файла в часть с подключением библиотеки.
+		// во время подключения будем вызывать ф-цию из библиотеки, чтобы узнать, что она делает.
+		// В зависимости от того, что эта ф-ция вернет - будем привязывать указатель на ф-цию и активировать элемент управления
+		//char *dllpath;
+
+	//	PtrToStringChars(files[i]);
+
+		for (int i = 0; i < files->Length; i++)
+		{		
+			
+			// --------
+			pin_ptr<const wchar_t> wch = PtrToStringChars(files[i]);
+			size_t convertedChars = 0;
+			size_t  sizeInBytes = ((files[i]->Length + 1) * 2);
+			errno_t err = 0;
+			char    *ch = (char *)malloc(sizeInBytes);
+
+			err = wcstombs_s(&convertedChars,
+				ch, sizeInBytes,
+				wch, sizeInBytes);
+			// Конвертация System::string  в char*
+
+
+			// ПОДКЛЮЧЕНИЕ БИБЛИОТЕКИ
+			HINSTANCE hLib = LoadLibrary(ch);
+			if (hLib == NULL)
+			{
+				MessageBox::Show(this, "Ошибка при загрузке DLL", "error", MessageBoxButtons::OK);
 			}
+			else
+			{
+				getBin = (pgetBin)GetProcAddress(hLib, "getBin");
+				if (!getBin)
+				{// handle the error
+					FreeLibrary(hLib);
+					MessageBox::Show(this, "Не найдена такая ф-ция в DLL", "Error", MessageBoxButtons::OK);
+				}
+			}
+			// КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕКИ
 		}
-		// КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕКИ
 
 	}
 

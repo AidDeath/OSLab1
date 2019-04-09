@@ -14,7 +14,7 @@ Dll8_API void getOct(int x, char* out)
 	strcpy_s(out, sizeof(buf), buf);
 }
 
-Dll8_API unsigned int SenseOfExiting()
+Dll8_API unsigned int SenseOfExisting()
 {
 	return 8;
 }

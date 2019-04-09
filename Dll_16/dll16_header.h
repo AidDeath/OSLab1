@@ -8,4 +8,4 @@
 // Обьявить функцию в заголовке
 
 Dll16_API void getHex(int x, char* out);
-Dll16_API unsigned int SenseOfExiting();
+Dll16_API unsigned int SenseOfExisting();

@@ -12,7 +12,7 @@ Dll3_API void getThree(int x, char* out)
 	strcpy_s(out, sizeof(buf), buf);
 }
 
-Dll3_API unsigned int SenseOfExiting()
+Dll3_API unsigned int SenseOfExisting()
 {
 	return 3;
 }

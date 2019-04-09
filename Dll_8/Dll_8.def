@@ -1,4 +1,4 @@
 LIBRARY Dll_8.dll
 EXPORTS 
 	getOct @1
-	SenseOfExiting @2
+	SenseOfExisting @2

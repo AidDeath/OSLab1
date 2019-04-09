@@ -8,4 +8,4 @@
 // Обьявить функцию в заголовке
 
 Dll2_API void getBin(int x,char* out);
-Dll2_API unsigned int SenseOfExiting();
+Dll2_API unsigned int SenseOfExisting();

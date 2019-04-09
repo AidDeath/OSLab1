@@ -8,4 +8,4 @@
 // Обьявить функцию в заголовке
 
 Dll8_API void getOct(int x, char* out);
-Dll8_API unsigned int SenseOfExiting();
+Dll8_API unsigned int SenseOfExisting();

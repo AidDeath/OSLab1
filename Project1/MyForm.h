@@ -39,8 +39,8 @@ namespace Project1 {
 		pgetOct getOct;
 		pgetHex getHex;
 		
-		typedef int(*pSenseOfExiting)();
-		pSenseOfExiting SenseOfExiting;
+		typedef int(*pSenseOfExisting)();
+		pSenseOfExisting SenseOfExisting;
 
 		MyForm(void)
 		{
@@ -121,6 +121,7 @@ namespace Project1 {
 			// radioButton1
 			// 
 			this->radioButton1->AutoSize = true;
+			this->radioButton1->Enabled = false;
 			this->radioButton1->Location = System::Drawing::Point(236, 12);
 			this->radioButton1->Name = L"radioButton1";
 			this->radioButton1->Size = System::Drawing::Size(75, 17);
@@ -132,6 +133,7 @@ namespace Project1 {
 			// radioButton2
 			// 
 			this->radioButton2->AutoSize = true;
+			this->radioButton2->Enabled = false;
 			this->radioButton2->Location = System::Drawing::Point(236, 35);
 			this->radioButton2->Name = L"radioButton2";
 			this->radioButton2->Size = System::Drawing::Size(88, 17);
@@ -143,6 +145,7 @@ namespace Project1 {
 			// radioButton3
 			// 
 			this->radioButton3->AutoSize = true;
+			this->radioButton3->Enabled = false;
 			this->radioButton3->Location = System::Drawing::Point(236, 58);
 			this->radioButton3->Name = L"radioButton3";
 			this->radioButton3->Size = System::Drawing::Size(77, 17);
@@ -154,6 +157,7 @@ namespace Project1 {
 			// radioButton4
 			// 
 			this->radioButton4->AutoSize = true;
+			this->radioButton4->Enabled = false;
 			this->radioButton4->Location = System::Drawing::Point(236, 81);
 			this->radioButton4->Name = L"radioButton4";
 			this->radioButton4->Size = System::Drawing::Size(79, 17);
@@ -197,7 +201,27 @@ namespace Project1 {
 		//Запись значения из адреса buf в строку System:: и передача в текст 
 		char buf[30] = "";
 
-		getBin(x, buf);
+		
+		if (radioButton1->Checked)
+		{
+			getBin(x, buf);
+		}
+		
+		if (radioButton2->Checked)
+		{
+			getThree(x, buf);
+		}
+
+		if (radioButton3->Checked)
+		{
+			getOct(x, buf);
+		}
+		
+		if (radioButton4->Checked)
+		{
+			getHex(x, buf);	
+		}
+		
 
 		System::String^ result = gcnew System::String(buf);
 		label1->Text = result;
@@ -219,7 +243,7 @@ namespace Project1 {
 		// запускаем цикл, который будет по очережи подставлять имя файла в часть с подключением библиотеки.
 		// во время подключения будем вызывать ф-цию из библиотеки, чтобы узнать, что она делает.
 		// В зависимости от того, что эта ф-ция вернет - будем привязывать указатель на ф-цию и активировать элемент управления
-		//char *dllpath;
+
 
 	//	PtrToStringChars(files[i]);
 
@@ -247,12 +271,61 @@ namespace Project1 {
 			}
 			else
 			{
+				SenseOfExisting = (pSenseOfExisting)GetProcAddress(hLib, "SenseOfExisting");
+				unsigned int	sense = SenseOfExisting();
+
+				switch (sense)
+				{
+				case (2): 
+				{
+					//activate binary controls
+					radioButton1->Enabled = true;
+					getBin = (pgetBin)GetProcAddress(hLib, "getBin");
+					break;
+				}
+				case (3): 
+				{
+					//activate triple controls
+					radioButton2->Enabled = true;
+					getThree = (pgetThree)GetProcAddress(hLib, "getThree");
+					break;
+				}
+				case (8):
+				{
+					//activate octagon controls
+					radioButton3->Enabled = true;
+					getOct = (pgetOct)GetProcAddress(hLib, "getOct");
+					break;
+				}
+				case (16):
+				{
+					// activate hexademical controls
+					radioButton4->Enabled = true;
+					getHex = (pgetHex)GetProcAddress(hLib, "getHex");
+					break;
+				}
+				default: 
+				{
+					// smth went wrong, not returned 2 3 8 16
+					break;
+				}
+				}
+				
+				
+				
+				
+			/*
 				getBin = (pgetBin)GetProcAddress(hLib, "getBin");
 				if (!getBin)
 				{// handle the error
 					FreeLibrary(hLib);
 					MessageBox::Show(this, "Не найдена такая ф-ция в DLL", "Error", MessageBoxButtons::OK);
 				}
+								ETALON
+				*/
+
+
+
 			}
 			// КОНЕЦ ПОДКЛЮЧЕНИЯ БИБЛИОТЕКИ
 		}

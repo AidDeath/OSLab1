@@ -14,7 +14,7 @@ Dll2_API void getBin(int x, char* out)
 	strcpy_s(out, sizeof(buf), buf);
 }
 
-Dll2_API unsigned int SenseOfExiting()
+Dll2_API unsigned int SenseOfExisting()
 {
 	return 2;
 }

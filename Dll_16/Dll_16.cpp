@@ -13,7 +13,7 @@ Dll16_API void getHex(int x, char* out)
 	strcpy_s(out, sizeof(buf), buf);
 }
 
-Dll16_API unsigned int SenseOfExiting()
+Dll16_API unsigned int SenseOfExisting()
 {
 	return 16;
 }

@@ -8,4 +8,4 @@
 // Обьявить функцию в заголовке
 
 Dll3_API void getThree(int x, char* out);
-Dll3_API unsigned int SenseOfExiting();
+Dll3_API unsigned int SenseOfExisting();
